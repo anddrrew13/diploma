@@ -1,0 +1,69 @@
+<vdr-page-block>
+  <vdr-action-bar>
+    <vdr-ab-left></vdr-ab-left>
+    <vdr-ab-right>
+      <ng-template #updateButton>
+        <button class="btn btn-primary" (click)="update()" [disabled]="detailForm.pristine || detailForm.invalid">{{ 'common.update' | translate }}</button>
+      </ng-template>
+    </vdr-ab-right>
+  </vdr-action-bar>
+</vdr-page-block>
+
+<form class="form" [formGroup]="detailForm">
+  <vdr-page-detail-layout>
+    <vdr-page-detail-sidebar>
+      <vdr-card *ngIf="entity$ | async as entity" [title]="'Статус'">
+        <vdr-chip *ngIf="entity.status === 'APPROVED'" colorType="success">{{ 'common.approved' | translate }}</vdr-chip>
+        <vdr-chip *ngIf="entity.status === 'REJECTED'" colorType="error">{{ 'common.rejected' | translate }}</vdr-chip>
+        <vdr-chip *ngIf="entity.status === 'WAITING_MANUAL_CHECK'" colorType="warning">{{ 'common.waiting_check' | translate }}</vdr-chip>
+        <vdr-chip *ngIf="entity.status === 'PENDING'" colorType="info">{{ 'common.pending' | translate }}</vdr-chip>
+
+        <div *ngIf="entity.spamFlagged !== null">
+          <span>
+            <vdr-chip *ngIf="entity.spamFlagged" colorType="error">{{ 'common.approved' | translate }}</vdr-chip>
+            <vdr-chip *ngIf="!entity.spamFlagged" colorType="success">{{ 'common.rejected' | translate }}</vdr-chip>
+          </span>
+          <span>
+            <vdr-chip *ngIf="entity.moderationFlagged" colorType="error">{{ 'common.approved' | translate }}</vdr-chip>
+            <vdr-chip *ngIf="!entity.moderationFlagged" colorType="success">{{ 'common.rejected' | translate }}</vdr-chip>
+          </span>
+        </div>
+      </vdr-card>
+
+      <vdr-card *ngIf="entity$ | async as entity">
+        <vdr-page-entity-info [entity]="entity" />
+      </vdr-card>
+    </vdr-page-detail-sidebar>
+
+    <vdr-page-block *ngIf="entity$ | async as entity">
+      <vdr-card title="Відгук">
+        <span>
+          <span>{{ entity.rating }} / 5</span>
+          <br />
+          <span>{{ entity.text }}</span>
+          <br />
+          <span>{{ entity.authorName }}</span>
+        </span>
+      </vdr-card>
+      <vdr-card title="Оцінка">
+        <div>
+          <span>{{ entity.summary }}</span>
+        </div>
+        <div>Загальний: {{ entity.generalMood }}</div>
+        <div>Враження від товару: {{ entity.productMood }}</div>
+        <div>Ціна: {{ entity.priceMood }}</div>
+        <div>Доставка: {{ entity.deliveryMood }}</div>
+        <div>Вага в сортуванні: {{ entity.score }}</div>
+      </vdr-card>
+
+      <vdr-card title="Метадані ШІ">
+        <div>
+          {{ entity.aiExplanation }}
+        </div>
+        <div>
+          <pre>{{ entity.moderationResult | json }}</pre>
+        </div>
+      </vdr-card>
+    </vdr-page-block>
+  </vdr-page-detail-layout>
+</form>

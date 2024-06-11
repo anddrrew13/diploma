@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "strictPropertyInitialization": false,
+    "target": "es2019",
+    "strict": true,
+    "sourceMap": false,
+    "skipLibCheck": true,
+    "outDir": "./dist",
+    "baseUrl": "./"
+  },
+  "exclude": ["node_modules", "migration.ts", "src/plugins/**/ui/*", "admin-ui"],
+  "ts-node": {
+    "files": true
+  },
+  "angularCompilerOptions": {
+    "disableTypeScriptVersionCheck": true,
+    "enableI18nLegacyMessageIdFormat": false,
+    "strictInjectionParameters": true,
+    "strictInputAccessModifiers": true,
+    "strictTemplates": true
+  }
+}

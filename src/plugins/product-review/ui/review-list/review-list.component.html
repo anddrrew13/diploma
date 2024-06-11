@@ -1,0 +1,84 @@
+<!-- optional if you want some buttons at the top -->
+<vdr-page-block>
+  <vdr-action-bar>
+    <vdr-ab-left></vdr-ab-left>
+  </vdr-action-bar>
+</vdr-page-block>
+
+<!-- The data table -->
+<vdr-data-table-2
+  id="review-list"
+  [items]="items$ | async"
+  [itemsPerPage]="itemsPerPage$ | async"
+  [totalItems]="totalItems$ | async"
+  [currentPage]="currentPage$ | async"
+  [filters]="filters"
+  (pageChange)="setPageNumber($event)"
+  (itemsPerPageChange)="setItemsPerPage($event)"
+>
+  <!-- optional if you want to support bulk actions -->
+  <vdr-bulk-action-menu locationId="review-list" [hostComponent]="this" [selectionManager]="selectionManager" />
+
+  <!-- Adds a search bar -->
+  <vdr-dt2-search [searchTermControl]="searchTermControl" searchTermPlaceholder="Filter by title" />
+
+  <!-- Here we define all the available columns -->
+  <vdr-dt2-column id="id" [heading]="'common.id' | translate">
+    <ng-template let-review="item">
+      <a class="button-ghost" [routerLink]="['/extensions', 'product-reviews', review.id]"
+        ><span>{{ review.id }}</span>
+        <clr-icon shape="arrow right"></clr-icon>
+      </a>
+    </ng-template>
+  </vdr-dt2-column>
+  <vdr-dt2-column id="created-at" [heading]="'common.created-at' | translate" [hiddenByDefault]="true" [sort]="sorts.get('createdAt')">
+    <ng-template let-review="item">
+      {{ review.createdAt | localeDate: 'short' }}
+    </ng-template>
+  </vdr-dt2-column>
+  <vdr-dt2-column id="updated-at" [heading]="'common.updated-at' | translate" [hiddenByDefault]="true" [sort]="sorts.get('updatedAt')">
+    <ng-template let-review="item">
+      {{ review.updatedAt | localeDate: 'short' }}
+    </ng-template>
+  </vdr-dt2-column>
+
+  <vdr-dt2-column id="status" heading="{{ 'common.status' | translate }}">
+    <ng-template let-review="item">
+      <vdr-chip *ngIf="review.status === 'APPROVED'" colorType="success">
+        {{ 'common.approved' | translate }}
+      </vdr-chip>
+      <vdr-chip *ngIf="review.status === 'PENDING'" colorType="warning">
+        {{ 'common.pending' | translate }}
+      </vdr-chip>
+      <vdr-chip *ngIf="review.status === 'REJECTED'" colorType="error">
+        {{ 'common.rejected' | translate }}
+      </vdr-chip>
+    </ng-template>
+  </vdr-dt2-column>
+
+  <vdr-dt2-column id="rating" heading="Rating" [sort]="sorts.get('rating')">
+    <ng-template let-review="item">
+      {{ review.rating }}
+    </ng-template>
+  </vdr-dt2-column>
+
+  <vdr-dt2-column id="author" heading="Author" [sort]="sorts.get('authorName')">
+    <ng-template let-review="item">{{ review.authorName }}</ng-template>
+  </vdr-dt2-column>
+
+  <vdr-dt2-column id="generalMood" heading="Mood">
+    <ng-template let-review="item">{{ review.generalMood }}</ng-template>
+  </vdr-dt2-column>
+
+  <vdr-dt2-column id="productMood" heading="Product mood">
+    <ng-template let-review="item">{{ review.productMood }}</ng-template>
+  </vdr-dt2-column>
+
+  <vdr-dt2-column id="priceMood" heading="Price mood">
+    <ng-template let-review="item">{{ review.priceMood }}</ng-template>
+  </vdr-dt2-column>
+
+  <vdr-dt2-column id="deliveryMood" heading="Delivery Mood">
+    <ng-template let-review="item">{{ review.deliveryMood }}</ng-template>
+  </vdr-dt2-column>
+</vdr-data-table-2>

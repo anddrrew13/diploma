@@ -1,0 +1,31 @@
+services:
+  database:
+    image: postgres
+    volumes:
+      - ./.db:/data/db
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: diplomadb
+  # maildev:
+  #   image: maildev/maildev
+  #   environment:
+  #     - MAILDEV_WEB_PORT=1080
+  #     - MAILDEV_SMTP_PORT=1025
+  #     - MAILDEV_INCOMING_USER=maildev
+  #     - MAILDEV_INCOMING_PASS=maildev
+  #   ports:
+  #     - 1080:1080
+  #     - 1025:1025
+  #   logging:
+  #     driver: 'json-file'
+  #     options:
+  #       max-size: '1m'
+  # redis:
+  #   image: redis
+  #   ports:
+  #     - '6379:6379'
+  #   command: redis-server --save 20 1 --loglevel warning
+  #   volumes:
+  #     - .redis:/data
